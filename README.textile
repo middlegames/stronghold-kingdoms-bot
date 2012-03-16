@@ -1,0 +1,141 @@
+h1. Requirements
+
+* JDK 7 (required by SHK Bot),
+* JRE 6 (required by Sikuli X due to conflicts with JRE version 7),
+* Sikuli X 10 (contains necessary DLL libraries)
+* Eclipse
+
+h1. Installation
+
+# Install JDK 7 and JRE 6 and Sikuli X,
+# Set JAVA_HOME environment variable to point JDK 7 home directory (e.g. C:\Program Files\Java\jdk1.7_u2)
+# Add JRE 6 bin directory to the PATH environment variable (e.g. C:\Program Files\Java\jre6\bin)
+# Restart System
+# Start Eclipse and configure JDK 7 as default workspace JRE
+# Clone SHK bot git repo to Eclipse workspace
+# Import project from repo into workspace - this should build it automatically
+
+h1. Configuration
+
+To properly work with SHK Bot you will have to describe villages and parishes they own. There are two directories designed to store village and parish data so one can reconfigure existing structure to work with his own infrastructure.
+
+Lets get start and see what we can find under @data@ directory:
+
+bc. data
+ \_ control
+ \_ images
+ \_ parish
+ \_ village
+
+Please *do not* touch elements in _control_ and _images_ directories. Those directories contains crucial patterns required by bot to work properly. 
+
+To reconfigure bot, you will have to list all your villages in @village@ subdirectory. E.g. when you own village _My Village X_ simply create new folder _my_village_x_ under @village@, and put some empty XML file inside named @village.xml@. This should look like:
+
+bc. data
+ \_ village
+     \_ my_village_x
+         \_ village.xml
+
+Open @village.xml@ in any text aditor and copy paste this code:
+
+bc. <?xml version="1.0" encoding="UTF-8"?>
+<village name="My Village X" parish="My Parish X" />
+
+Please *remember* to change _name_ and _parish_ attributes:
+* @name@ - should be changed to your *village name*
+* @parish@ - should be changed to the *parish name* where village is located
+
+Now you will have to create corresponding parish element in @parish@ subdirectory, so @data@ directory  structure would look like:
+
+bc. data
+ \_ village
+     \_ my_village_x
+         \_ village.xml
+ \_ parish
+     \_ my_parish_x
+         \_ parish.xml
+
+Open @parish.xml@ file and copy paste this code inside:
+
+bc. <?xml version="1.0" encoding="UTF-8"?>
+<parish name="My Parish X" steward="false" />
+
+Please *remember* to change _name_ and _steward_ attributes:
+* @name@ - should be changed to your *parish name*
+* @steward@ - should be changed to true if your are a parish steward
+
+Files @village.xml@ and @parish.xml@ will be called from now *village descriptor* and *parish descriptor*, please remember this name cause it will be used many times here.
+
+Now you have to execute *very* important operation. You have to take screenshoots of your villages dropdown (take my list as an example):
+
+!https://github.com/middlegames/stronghold-kingdoms-bot/raw/master/data/images/villages_dropdown.png! 
+
+From this image you have to cut village *name only*, save in in file @select.png@ and put in corresponding village directory next to the village descriptor. This is very important so make sure you don't have nothing besides your village name on this image. For my village named _Cintra_ this file looks like this:
+
+
+!https://github.com/middlegames/stronghold-kingdoms-bot/raw/master/data/images/example_select.png!
+
+You have to do the same thing for parish, but you will have to take image from other place. Please open stock exchange in village located in particular parish. Take screenshoot of parishes list from drop down list:
+
+!https://github.com/middlegames/stronghold-kingdoms-bot/raw/master/data/images/parishes_dropdown.png! 
+
+And extract parish *name only*, save it to select.png file and put in parish directory near parish descriptor, so @data@ directory should look this:
+
+bc. data
+ \_ village
+     \_ my_village_x
+         \_ village.xml
+         \_ select.png
+ \_ parish
+     \_ my_parish_x
+         \_ parish.xml
+         \_ select.png
+
+Example image extracted from such screenshoot should look like this one:
+
+!https://github.com/middlegames/stronghold-kingdoms-bot/raw/master/data/images/example_select_parish.png!
+
+h4. Important note 1!
+
+This is very important to have @select.png@ files in *all* parish and village directories. Otherwise SHK Bot will raise an error.
+
+h4. Important note 2!
+
+The second very important thing is to have all your parishes defined in parish directory. For example if you have villages A, B and C, located in parishes X, Y and Z, you have to define all of them in @parish@ directory!
+
+bc. data
+ \_ village
+     \_ a
+     \_ b
+     \_ c
+ \_ parish
+     \_ x
+     \_ y
+     \_ z 
+
+Otherwise you will get an error and SHK Bot won't run! There is a static mapping between village and parish, so both have to exists in runtime!
+
+h1. Starting SHK Bot
+
+h3. From Eclipse
+
+# Run Eclipse
+# Right click on project, select Run As -> Java Application
+# Type @BotUI@ in search textfield and press OK
+# After SHK Bot window appear, select menu Bot -> Start
+
+h3. From Command Line
+
+# Run file @shkbot.bat@
+# After SHK Bot window appear, select menu Bot -> Start
+
+h1. Work In Progress
+
+Due to work in progress system is unstable! Please keep this in mind when testing. Many functionalities could not working properly.
+
+h1. TODO
+
+# List goods from each villages and specify which ones can be sold and which one should not
+# Auto-collect cards
+# Recruit specified soldiers
+# OCR - man, this is pain in the ass. If someone knows good OCR engine available from command line - please share. I'm currently using Tesseract OCR, but recognize only 50% captions correctly. I waste to many hours to deal with OCR, and if there will be no good solution I will drop this feature.
