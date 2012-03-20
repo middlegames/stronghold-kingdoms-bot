@@ -2,18 +2,14 @@ package com.middlegames.shkbot.ocr;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.ThreadFactory;
 
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.Match;
@@ -29,104 +25,14 @@ import org.sikuli.script.Region;
 public class OCR {
 
 	/**
-	 * Comparator used to sort matches position on x-axis.
-	 * 
-	 * @author Middle Gamer (middlegamer)
-	 */
-	private static class MatchesComparator implements Comparator<Match> {
-
-		@Override
-		public int compare(Match a, Match b) {
-			if (a.x < b.x) {
-				return -1;
-			} else if (a.x > b.x) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
-	}
-
-	/**
-	 * Parallel matcher is used to execute matching operation in separate
-	 * thread.
-	 * 
-	 * @author Middle Gamer (middlegamer)
-	 */
-	private static class ParallelMatcher implements Callable<List<Match>> {
-
-		/**
-		 * Glyph to be recognized
-		 */
-		private Glyph glyph = null;
-
-		/**
-		 * Region in which we should search for given glyph
-		 */
-		private Region region = null;
-
-		/**
-		 * Match - glyph mapping
-		 */
-		private Map<Match, Glyph> mapping = null;
-
-		/**
-		 * Latch
-		 */
-		private CountDownLatch latch = null;
-
-		/**
-		 * Construct me.
-		 * 
-		 * @param glyph - glyph to be recognized
-		 * @param region - region in which we should search for glyps
-		 * @param mapping - mapping
-		 * @param latch - latch
-		 */
-		public ParallelMatcher(Glyph glyph, Region region, Map<Match, Glyph> mapping, CountDownLatch latch) {
-			this.glyph = glyph;
-			this.region = region;
-			this.mapping = mapping;
-			this.latch = latch;
-		}
-
-		@Override
-		public List<Match> call() throws Exception {
-			try {
-
-				List<Match> matches = new ArrayList<>();
-				Iterator<Match> all = region.findAllNow(glyph.getPattern());
-
-				while (all.hasNext()) {
-					Match m = all.next();
-					matches.add(m);
-					mapping.put(m, glyph);
-				}
-
-				return matches;
-
-			} finally {
-				latch.countDown();
-			}
-		}
-	}
-
-	private static class DaemonThreadFactory implements ThreadFactory {
-
-		private int i = 0;
-
-		@Override
-		public Thread newThread(Runnable r) {
-			Thread t = new Thread(r, "matcher-thread-" + ++i);
-			t.setDaemon(true);
-			return t;
-		}
-	}
-
-	/**
 	 * Execution service.
 	 */
 	private static ExecutorService executor = Executors.newCachedThreadPool(new DaemonThreadFactory());
+
+	/**
+	 * Specs cache.
+	 */
+	private static Map<String, OCR> specs = new HashMap<>();
 
 	/**
 	 * Glyphs list.
@@ -149,8 +55,13 @@ public class OCR {
 	 * @return OCR engine
 	 */
 	public static OCR getSpec(String name) {
-		List<Glyph> glyphs = Glyphs.getInstance().load("data/glyphs/" + name);
-		return new OCR(glyphs);
+		OCR ocr = specs.get(name);
+		if (ocr == null) {
+			List<Glyph> glyphs = Glyphs.getInstance().load("data/glyphs/" + name);
+			ocr = new OCR(glyphs);
+			specs.put(name, ocr);
+		}
+		return ocr;
 	}
 
 	/**
@@ -161,7 +72,9 @@ public class OCR {
 	 */
 	public String read(Region region) {
 
-		region.setThrowException(false);
+		if (region.getThrowException()) {
+			region.setThrowException(false);
+		}
 
 		Map<Match, Glyph> mapping = new HashMap<>();
 		List<Match> matches = new ArrayList<>();
