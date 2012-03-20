@@ -14,8 +14,19 @@ public class Village {
 
 	private static final Pattern VILLAGES_SWITCHER = U.pattern("data/control/system-villages-switcher.png");
 
+	/**
+	 * Village pattern.
+	 */
 	private Pattern pattern = null;
+
+	/**
+	 * Parish object.
+	 */
 	private Parish parish = null;
+
+	/**
+	 * Raw village name.
+	 */
 	private String name = null;
 
 	public Village(String pattern, Parish parish) {
@@ -23,18 +34,12 @@ public class Village {
 		this.parish = parish;
 	}
 
-	public Pattern getPattern() {
-		return pattern;
-	}
-
-	public Parish getParish() {
-		return parish;
-	}
-
 	public boolean select() throws SHKException {
+
 		Region s = SHK.R.SYSTEM;
 		Region v = SHK.R.VILLAGES;
 		try {
+
 			Region dropdown = s.find(VILLAGES_SWITCHER);
 			if (dropdown == null) {
 				Consol.error("Villages switcher has not ben found");
@@ -54,6 +59,7 @@ public class Village {
 			}
 
 			Thread.sleep(4000);
+
 			return true;
 		} catch (FindFailed e) {
 			e.printStackTrace();
@@ -63,6 +69,14 @@ public class Village {
 			Consol.error("Village selection has been interrupted");
 			return false;
 		}
+	}
+
+	public Pattern getPattern() {
+		return pattern;
+	}
+
+	public Parish getParish() {
+		return parish;
 	}
 
 	private boolean checkErrorCondition() throws SHKConnectionErrorException {

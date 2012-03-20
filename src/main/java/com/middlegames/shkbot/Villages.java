@@ -11,14 +11,23 @@ import com.middlegames.shkbot.xml.VillageDescriptor;
 
 
 /**
- * Villages cache.
+ * Villages persistent cache.
  * 
  * @author Middle Gamer (middlegamer)
  */
 public class Villages {
 
+	/**
+	 * Villages map.
+	 */
 	private static Map<String, Village> villages = null;
-	
+
+	/**
+	 * Get village with specific name.
+	 * 
+	 * @param name - village name
+	 * @return Village object
+	 */
 	public static Village get(String name) {
 		if (villages == null) {
 			init();
@@ -29,7 +38,7 @@ public class Villages {
 		}
 		return v;
 	}
-	
+
 	public static List<Village> all() {
 		List<Village> r = new ArrayList<>();
 		for (Entry<String, Village> entry : villages.entrySet()) {
@@ -37,7 +46,7 @@ public class Villages {
 		}
 		return r;
 	}
-	
+
 	private synchronized static void init() {
 		villages = new HashMap<>();
 		PersistenceEngine engine = PersistenceEngine.getInstance();
@@ -48,13 +57,13 @@ public class Villages {
 		}
 		Consol.info("Number of " + villages.size() + " villages has been found in storage");
 	}
-	
+
 	static {
 		init();
 	}
-	
+
 	public static void main(String[] args) {
 		List<Village> p = Villages.all();
-		System.out.println(p.size());	
+		System.out.println(p.size());
 	}
 }
