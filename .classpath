@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/jython"/>
-	<classpathentry kind="src" path="src/main/cpp"/>
 	<classpathentry excluding="numbers/" kind="src" path="src/main/resources"/>
 	<classpathentry kind="lib" path="lib/sikuli-script.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/jintellitype-1.3.8.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
