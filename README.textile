@@ -126,7 +126,7 @@ h3. From Eclipse
 
 h3. From Command Line
 
-# Run file @shkbot.bat@
+# Run file @shkbot.bat@ by double click on it
 # After SHK Bot window appear, select menu Bot -> Start
 
 h1. Work In Progress
