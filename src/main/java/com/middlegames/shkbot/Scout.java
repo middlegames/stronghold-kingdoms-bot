@@ -242,7 +242,7 @@ public class Scout {
 
 			// check if selected target FOR SURE is a stash (can be also other's
 			// player village or AI castle or wolfs lair)
-			Match m;
+			Match m = null;
 			if ((m = SHK.R.DEVICE.find(TARGET_ROLL)) != null) {
 				m.highlight(1.0f);
 				Consol.error("Incorrect selection - target scroll has been found");

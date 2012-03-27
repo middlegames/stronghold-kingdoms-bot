@@ -7,14 +7,28 @@ import org.sikuli.script.Match;
 import org.sikuli.script.Pattern;
 import org.sikuli.script.Region;
 import org.sikuli.script.Screen;
+import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+
+import com.middlegames.shkbot.SHK.R;
 
 
 /**
- * 
+ * Some global data.
  * 
  * @author Middle Gamer (middlegamer)
  */
 public class SHK {
+
+	/**
+	 * Logger instance.
+	 */
+	public static final Logger LOG = (Logger) LoggerFactory.getLogger(SHK.class);
+	static {
+		LOG.setLevel(Level.DEBUG);
+	}
 
 	public static class R {
 
@@ -186,38 +200,38 @@ public class SHK {
 	private static final Pattern PLAY_BUTTON = U.pattern("data/control/play-button.png");
 	private static final Pattern CLOSE_WINDOW_BUTTON = U.pattern("data/control/close-window-button.png");
 
+	/**
+	 * @return TRue if SHK window is open, false otherwise.
+	 */
 	public static boolean isOpen() {
-		return SHK.R.SHIELD.exists(LOGO) != null;
+		boolean found = U.exists(SHK.R.SHIELD, LOGO);
+		if (!found) {
+			LOG.warn("Cannot find shield! Is SHK window open?");
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Shield " + LOGO + " cannot be found in " + SHK.R.SHIELD);
+			}
+		}
+		return found;
 	}
 
 	/**
 	 * @return true in case of SHK connection error, false otherwise
 	 */
 	public static boolean isConnectionError() {
-		Match m = null;
-		try {
-			m = R.SCREEN.find(CONNECTION_ERROR);
-			if (m != null) {
-				m.highlight(2.0f);
-			}
-		} catch (FindFailed e) {
-			return false;
-		}
-		return m != null;
+		return U.find(R.SCREEN, CONNECTION_ERROR) != null;
 	}
 
 	public static boolean closeConnectionError() {
 		int i = 0;
-		final Region screen = R.SCREEN;
 		do {
 			try {
-				if (screen.click(CONNECTION_ERROR, 0) != 0) {
-					screen.type(CONNECTION_ERROR, "\n", 0); // enter
+				if (U.click(R.SCREEN, CONNECTION_ERROR)) {
+					R.SCREEN.type(CONNECTION_ERROR, "\n", 0); // enter
 				}
 			} catch (FindFailed e) {
 				throw new RuntimeException(e);
 			}
-			boolean vanish = screen.waitVanish(CONNECTION_ERROR, 10);
+			boolean vanish = R.SCREEN.waitVanish(CONNECTION_ERROR, 10);
 			if (vanish) {
 				return true;
 			}

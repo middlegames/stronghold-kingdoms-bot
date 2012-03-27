@@ -1,6 +1,7 @@
 package com.middlegames.shkbot;
 
-import org.sikuli.script.FindFailed;
+import static com.middlegames.shkbot.SHK.LOG;
+
 import org.sikuli.script.Pattern;
 import org.sikuli.script.Region;
 
@@ -36,11 +37,11 @@ public class Village {
 
 	public boolean select() throws SHKException {
 
-		Region s = SHK.R.SYSTEM;
-		Region v = SHK.R.VILLAGES;
+		boolean clicked = false;
+
 		try {
 
-			Region dropdown = s.find(VILLAGES_SWITCHER);
+			Region dropdown = U.find(SHK.R.SYSTEM, VILLAGES_SWITCHER);
 			if (dropdown == null) {
 				Consol.error("Villages switcher has not ben found");
 				return checkErrorCondition();
@@ -48,23 +49,23 @@ public class Village {
 
 			dropdown = dropdown.right();
 			dropdown.setW(400);
-			dropdown.setThrowException(false);
 
-			s.click(dropdown, 0);
+			clicked = U.click(SHK.R.SYSTEM, dropdown);
+			if (!clicked) {
+				LOG.warn("Cannot click on the villages dropdown");
+			}
+
 			Thread.sleep(1000);
-			int click = v.click(this.getPattern(), 0);
-			if (click == 0) {
-				Consol.error("Village " + getName() + " not selected - pattern has not been found!");
+
+			clicked = U.click(SHK.R.VILLAGES, getPattern());
+			if (!clicked) {
+				LOG.warn("Cannot select village " + getName());
 				return checkErrorCondition();
 			}
 
 			Thread.sleep(4000);
 
 			return true;
-		} catch (FindFailed e) {
-			e.printStackTrace();
-			Consol.error("Village selection failed");
-			return checkErrorCondition();
 		} catch (InterruptedException e) {
 			Consol.error("Village selection has been interrupted");
 			return false;

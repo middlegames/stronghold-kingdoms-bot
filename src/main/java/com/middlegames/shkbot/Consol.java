@@ -1,5 +1,7 @@
 package com.middlegames.shkbot;
 
+import static com.middlegames.shkbot.SHK.LOG;
+
 import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.SystemTray;
@@ -47,9 +49,11 @@ public class Consol {
 
 	public static void iconMessage(String message) {
 		icon.displayMessage("Message", message, MessageType.INFO);
+		LOG.info(message);
 	}
 
 	public static void iconError(String message) {
 		icon.displayMessage("Error", message, MessageType.ERROR);
+		LOG.error(message);
 	}
 }

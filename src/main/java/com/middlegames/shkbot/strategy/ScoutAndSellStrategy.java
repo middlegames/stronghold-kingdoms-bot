@@ -7,8 +7,9 @@ import com.middlegames.shkbot.SHKException;
 import com.middlegames.shkbot.Scout;
 import com.middlegames.shkbot.Stash;
 
+
 /**
- * This strategy will search for nearest stash, forage it and sell corresponding 
+ * This strategy will search for nearest stash, forage it and sell corresponding
  * good in stock exchange.
  * 
  * @author Middle Gamer (middlegamer)
@@ -28,7 +29,7 @@ public class ScoutAndSellStrategy extends AbstractStrategy {
 					if (stash == null) {
 						continue;
 					}
-					if (!stash.isPouch()) { 
+					if (!stash.isPouch()) {
 						for (Merchant merchant : getMerchants()) {
 							if (!isRunning()) {
 								break;
@@ -45,7 +46,7 @@ public class ScoutAndSellStrategy extends AbstractStrategy {
 			}
 		} while (isRunning());
 	}
-	
+
 	@Override
 	public String getName() {
 		return "Scout And Sell Strategy";
