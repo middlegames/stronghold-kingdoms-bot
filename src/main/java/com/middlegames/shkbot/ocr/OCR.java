@@ -1,6 +1,7 @@
 package com.middlegames.shkbot.ocr;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -95,8 +96,11 @@ public class OCR {
 		}
 
 		for (FutureTask<List<Match>> future : futures) {
+			Collection<Match> mc = null;
 			try {
-				matches.addAll(future.get());
+				if ((mc = future.get()) != null) {
+					matches.addAll(mc);
+				}
 			} catch (ExecutionException | InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -120,9 +124,9 @@ public class OCR {
 	 * @throws FindFailed
 	 */
 	public static void main(String[] args) throws InterruptedException, FindFailed {
-		Region region = new Region(0, 0, 700, 600);
+		Region region = new Region(600, 600, 100, 50);
 		region.highlight(5.0f);
-		OCR ocr = OCR.getSpec("numbers");
+		OCR ocr = OCR.getSpec("numbers-res-b");
 		System.out.println(ocr.read(region));
 	}
 }

@@ -22,6 +22,12 @@ public class Glyph {
 	private transient Pattern pattern = null;
 
 	/**
+	 * Percentage similarity value.
+	 */
+	@XmlAttribute(name = "similarity")
+	private int similarity = 95;
+
+	/**
 	 * Character representing the glyph.
 	 */
 	@XmlAttribute(name = "char")
@@ -40,7 +46,7 @@ public class Glyph {
 
 	public Pattern getPattern() {
 		if (pattern == null) {
-			pattern = U.pattern(path, 0.95f);
+			pattern = U.pattern(path, (float) similarity / 100);
 		}
 		return pattern;
 	}

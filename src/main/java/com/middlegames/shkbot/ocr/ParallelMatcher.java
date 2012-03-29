@@ -60,6 +60,10 @@ public class ParallelMatcher implements Callable<List<Match>> {
 			List<Match> matches = new ArrayList<>();
 			Iterator<Match> all = region.findAllNow(glyph.getPattern());
 
+			if (all == null) {
+				return null;
+			}
+
 			while (all.hasNext()) {
 				Match m = all.next();
 				matches.add(m);

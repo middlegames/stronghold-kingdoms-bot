@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyphs name="numbers-res-b">
+	<glyph image="0.png" char="0" similarity="80" />
+	<glyph image="1.png" char="1" similarity="80" />
+	<glyph image="2.png" char="2" similarity="80" />
+	<glyph image="3.png" char="3" similarity="80" />
+	<glyph image="4.png" char="4" similarity="80" />
+	<glyph image="5.png" char="5" similarity="80" />
+	<glyph image="6.png" char="6" similarity="80" />
+	<glyph image="7.png" char="7" similarity="80" />
+	<glyph image="8.png" char="8" similarity="80" />
+	<glyph image="9.png" char="9" similarity="80" />
+</glyphs>
