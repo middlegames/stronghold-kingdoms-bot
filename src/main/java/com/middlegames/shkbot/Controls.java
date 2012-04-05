@@ -1,7 +1,9 @@
 package com.middlegames.shkbot;
+
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.Pattern;
 import org.sikuli.script.Region;
+
 
 /**
  * @author Middle Gamer (middlegamer)
@@ -14,7 +16,7 @@ public class Controls {
 	private static final Pattern CTRL_HUT2 = U.pattern("data/control/control-village-2.png").exact();
 	private static final Pattern CTRL_MARCHANT1 = U.pattern("data/control/control-marchant-1.png").exact();
 	private static final Pattern CTRL_MARCHANT2 = U.pattern("data/control/control-marchant-2.png").exact();
-	
+
 	public static boolean openMap() throws SHKException {
 		Consol.info("Opening map tab");
 		Region r = SHK.R.TABS;
@@ -35,7 +37,7 @@ public class Controls {
 		}
 		return false;
 	}
-	
+
 	public static boolean openVillage() throws SHKException {
 		Consol.info("Opening village tab");
 		Region r = SHK.R.TABS;
@@ -78,7 +80,7 @@ public class Controls {
 		}
 		return false;
 	}
-	
+
 	public static void main(String[] args) throws InterruptedException, SHKException {
 		Thread.sleep(3000);
 		openMarchant();

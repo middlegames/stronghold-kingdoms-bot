@@ -95,6 +95,12 @@ public class Village {
 		this.name = name;
 	}
 
+	public void scan() throws SHKException {
+		select();
+		Controls.openMarchant();
+		// TODO
+	}
+
 	@Override
 	public String toString() {
 		return "Village[" + getName() + "]";
