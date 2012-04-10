@@ -13,12 +13,12 @@ SET LOG=bot.log
 GOTO :BuildClasspath
 
 :BuildClasspath
+SET CLASSPATH=%CD%\bin
 FOR /R ./lib %%a in (*.jar) DO CALL :AddToPath %%a
-SET CLASSPATH=%1;%CLASSPATH%bin
 GOTO :StartBot
 
 :AddToPath
-SET CLASSPATH=%1;%CLASSPATH%
+SET CLASSPATH=%CLASSPATH%;%1
 GOTO :EOF
 
 :Compile
