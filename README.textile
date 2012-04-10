@@ -115,6 +115,10 @@ bc. data
 
 Otherwise you will get an error and SHK Bot won't run! There is a static mapping between village and parish, so both have to exists in runtime!
 
+h4. Important note 3!
+
+Before you start the bot you have to disable tooltips within Stronghold Kingdoms! You will find tooltips configuration in Stronghold Kingdoms settings menu.
+
 h1. Starting SHK Bot
 
 h3. From Eclipse
